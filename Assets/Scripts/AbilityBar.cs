@@ -1,12 +1,14 @@
 using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
 
 public class AbilityBar : MonoBehaviour
 {
     [SerializeField] private HealthBar _healthBar;
     [SerializeField] private Button _damage;
     [SerializeField] private Button _heal;
+
+    [SerializeField] private int _healPower = 10;
+    [SerializeField] private int _damagePower = -10;
 
     private void Start()
     {
@@ -16,15 +18,11 @@ public class AbilityBar : MonoBehaviour
 
     private void Heal()
     {
-        _healthBar.TakeHeal(10);
+        _healthBar.TakeHeal(_healPower);
     }
 
     private void Damage()
     {
-        
-        _healthBar.TakeDamage(10);
-        
+        _healthBar.TakeDamage(_damagePower);
     }
-    
-
 }

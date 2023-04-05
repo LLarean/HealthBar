@@ -1,44 +1,44 @@
-using System;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 
-public class HealthBar : MonoBehaviour
+public class   HealthBar : MonoBehaviour
 {
     [SerializeField] private Slider _slider;
     [SerializeField] private float fillSpeed = 0.5f;
-    private float _health;
     
+    private int _currentValue;
+
     public void TakeDamage(int damage)
     {
-        float newHealth = Mathf.Max(0, _health - damage);
-        
-        StartCoroutine(ChangeValue(newHealth));
+        _currentValue = (int)Mathf.Clamp(_currentValue - damage, _slider.minValue, _slider.maxValue);
+        StartCoroutine(ChangeValue());
     }
-
+     
     public void TakeHeal(int heal)
     {
-        float newHealth = Mathf.Max(0, _health + heal);
-        
-        StartCoroutine(ChangeValue(newHealth));
+        _currentValue = (int)Mathf.Clamp(_currentValue + heal, _slider.minValue, _slider.maxValue);
+        StartCoroutine(ChangeValue());
     }
 
     private void Start()
     {
-        _health = _slider.maxValue;
+        _currentValue = (int)_slider.value;
     }
 
-    private IEnumerator ChangeValue(float newHealth)
+    private IEnumerator ChangeValue()
     {
+        // float newValue = Mathf.Clamp(_currentValue + amount, _slider.minValue, _slider.maxValue);
+        
         // float newHealth = Mathf.Max(0, _health - value);
         
-        while (_health > newHealth)
-        {
-            _health -= fillSpeed * Time.deltaTime;
-            _slider.value = _health;
-            yield return null;
-        }
-        
-        _health = newHealth;
+        // while (_currentValue != newHealth)
+        // {
+        //     _currentValue -= fillSpeed * Time.deltaTime;
+        //     _slider.value = _currentValue;
+        yield return null;
+        // }
+        //
+        // _currentValue = newHealth;
     }
 }
