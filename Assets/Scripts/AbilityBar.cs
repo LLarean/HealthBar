@@ -3,12 +3,9 @@ using UnityEngine.UI;
 
 public class AbilityBar : MonoBehaviour
 {
-    [SerializeField] private HealthBar _healthBar;
+    [SerializeField] private Player _player;
     [SerializeField] private Button _damage;
     [SerializeField] private Button _heal;
-
-    [SerializeField] private int _healPower = 10;
-    [SerializeField] private int _damagePower = -10;
 
     private void Start()
     {
@@ -16,13 +13,13 @@ public class AbilityBar : MonoBehaviour
         _heal.onClick.AddListener(Heal);
     }
 
-    private void Heal()
-    {
-        _healthBar.TakeHeal(_healPower);
-    }
-
     private void Damage()
     {
-        _healthBar.TakeDamage(_damagePower);
+        _player.TakeDamage();
+    }
+
+    private void Heal()
+    {
+        _player.TakeHeal();
     }
 }

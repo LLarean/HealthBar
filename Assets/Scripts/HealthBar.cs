@@ -2,43 +2,46 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 
-public class   HealthBar : MonoBehaviour
+public class HealthBar : MonoBehaviour
 {
     [SerializeField] private Slider _slider;
-    [SerializeField] private float fillSpeed = 0.5f;
+    [SerializeField] private int _animationFrameCount = 30;
+    private Coroutine _coroutine;
+
+    public void Init(float emptyHealth, float fullHealth)
+    {
+        _slider.minValue = emptyHealth;
+        _slider.maxValue = fullHealth;
+        _slider.value = fullHealth;
+    }
+
+    public void StartChangeValue(float currentValue)
+    {
+        if (_coroutine != null)
+        {
+            StopCoroutine(_coroutine);
+        }
+        
+        _coroutine = StartCoroutine(ChangeValue(currentValue));
+    }
     
-    private int _currentValue;
-
-    public void TakeDamage(int damage)
+    private IEnumerator ChangeValue(float currentValue)
     {
-        _currentValue = (int)Mathf.Clamp(_currentValue - damage, _slider.minValue, _slider.maxValue);
-        StartCoroutine(ChangeValue());
-    }
-     
-    public void TakeHeal(int heal)
-    {
-        _currentValue = (int)Mathf.Clamp(_currentValue + heal, _slider.minValue, _slider.maxValue);
-        StartCoroutine(ChangeValue());
-    }
-
-    private void Start()
-    {
-        _currentValue = (int)_slider.value;
-    }
-
-    private IEnumerator ChangeValue()
-    {
-        // float newValue = Mathf.Clamp(_currentValue + amount, _slider.minValue, _slider.maxValue);
+        float value = _slider.value;
         
-        // float newHealth = Mathf.Max(0, _health - value);
+        float animationPath = currentValue - _slider.value;
+        float animationStep = animationPath / _animationFrameCount;
         
-        // while (_currentValue != newHealth)
-        // {
-        //     _currentValue -= fillSpeed * Time.deltaTime;
-        //     _slider.value = _currentValue;
-        yield return null;
-        // }
-        //
-        // _currentValue = newHealth;
+        WaitForEndOfFrame waitForEndOfFrame = new WaitForEndOfFrame();
+        
+        for (int i = 0; i < _animationFrameCount; i++)
+        {
+            value += animationStep;
+            _slider.value = value;
+            yield return waitForEndOfFrame;
+        }
+        
+        _slider.value = currentValue;
+        _coroutine = null;
     }
 }
