@@ -11,15 +11,9 @@ public class Player : MonoBehaviour
     private int _healPower = 10;
     private float _currentHealth;
 
-    public void TakeDamage()
-    {
-        ChangeHealth(-_damagePower);
-    }
+    public void TakeDamage() => ChangeHealth(-_damagePower);
 
-    public void TakeHeal()
-    {
-        ChangeHealth(_healPower);
-    }
+    public void TakeHeal() => ChangeHealth(_healPower);
 
     private void Start()
     {

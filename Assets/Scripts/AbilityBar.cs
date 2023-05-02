@@ -13,13 +13,7 @@ public class AbilityBar : MonoBehaviour
         _heal.onClick.AddListener(Heal);
     }
 
-    private void Damage()
-    {
-        _player.TakeDamage();
-    }
+    private void Damage() => _player.TakeDamage();
 
-    private void Heal()
-    {
-        _player.TakeHeal();
-    }
+    private void Heal() => _player.TakeHeal();
 }
